@@ -15,6 +15,7 @@ import UsuarioDetails from "./components/usuario/UsuarioDetails";
 import ProtectedRoutes from "./components/pages/ProtectedRoutes";
 import InvalidRoutes from "./components/pages/InvalidRoutes";
 import RepartidorForm from "./components/repartidor/RepartidorForm";
+import RepartidorDetails from "./components/repartidor/RepartidorDetails";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
           { path: "/repartidores", element: <RepartidoresTable /> },
           { path: "/usuarioForm", element: <UsuarioFrom /> },
           { path: "/repartidorForm", element: <RepartidorForm /> },
+          { path: "/repartidor/:id", element: <RepartidorDetails /> },
         ],
       },
       {

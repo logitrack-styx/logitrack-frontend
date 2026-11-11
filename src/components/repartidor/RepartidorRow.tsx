@@ -30,11 +30,11 @@ export default function RepartidorRow({ repartidor }: Props) {
                             Ver
                         </Link>
                     </Button>
-                    <Button size={"xs"} variant={"secondary"}>
+                    {/* <Button size={"xs"} variant={"secondary"}>
                         <Link to={'#'}>
                             Cambiar Estado
                         </Link>
-                    </Button>
+                    </Button> */}
                 </>
             </TableCell>
         </TableRow>

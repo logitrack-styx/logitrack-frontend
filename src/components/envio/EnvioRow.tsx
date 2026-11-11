@@ -42,7 +42,7 @@ export default function EnvioRow({ envio }: Props) {
                         </Link>
                     </Button>
                     <CambiarEstadoButton envio={envio} />
-                    {/* <CancelarEnvioButton envio={envio} /> */}
+                    <CancelarEnvioButton envio={envio} />
                 </>
             </TableCell>
         </TableRow>

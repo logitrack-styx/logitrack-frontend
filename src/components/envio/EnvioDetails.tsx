@@ -130,7 +130,7 @@ export default function EnvioDetails() {
                     </CardContent>
                 </Card>
             </div>
-            {isAdmin && envio.estado === "PENDIENTE" && (
+            {isAdmin && envio.estado === "PENDIENTE" && !envio.repartidorId && (
                 <AsignarRepartidorForm envioId={envio.id} />
             )}
         </div>

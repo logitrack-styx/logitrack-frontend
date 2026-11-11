@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
     (res) => res,
     (error) => {
         const status = error.response?.status
-        if ((status === 401 || status === 403) && !isPublicRoute) {
+        if ((status === 401 || status === 403) && !isPublicRoute(error.config?.url)) {
             useAppContext.getState().logout()
             window.location.href = "/login"
         }
