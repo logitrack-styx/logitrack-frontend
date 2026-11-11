@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { decodedToken } from '../helpers/decode-token';
+import { persist } from "zustand/middleware";
+import { queryClient } from '../config/query-client';
 
 type Store = {
     token: string | null,
@@ -8,23 +9,23 @@ type Store = {
     logout: () => void
 }
 
-const getInitialToken = (): string | null => {
-    const token = localStorage.getItem("token");
-    return token && decodedToken(token) ? token : null;
-};
-
-const initialToken = getInitialToken();
-
-export const useAppContext = create<Store>()((set) => ({
-        token: initialToken,
-        isAuthenticated: !!initialToken,
-        login: (token) => {
-            localStorage.setItem("token", token);
-            set({ token, isAuthenticated: true })
-        },
-        logout: () => {
-            localStorage.removeItem('token')
-            set({ token: null, isAuthenticated: false })
-        },
-    })
+export const useAppContext = create<Store>()(
+    persist(
+        (set) => ({
+            token: null,
+            isAuthenticated: false,
+            login: (token) => {
+                set({ token, isAuthenticated: true })
+            },
+            logout: () => {
+                localStorage.removeItem("token")
+                queryClient.clear()
+                set({ token: null, isAuthenticated: false })
+            }
+        }),
+        {
+            name: "token",
+            partialize: (state) => ({ token: state.token })
+        }
+    )
 )

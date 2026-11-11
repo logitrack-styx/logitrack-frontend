@@ -14,6 +14,7 @@ import Home from "./components/pages/Home";
 import UsuarioDetails from "./components/usuario/UsuarioDetails";
 import ProtectedRoutes from "./components/pages/ProtectedRoutes";
 import InvalidRoutes from "./components/pages/InvalidRoutes";
+import RepartidorForm from "./components/repartidor/RepartidorForm";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoutes />,
         children: [
-          { path: "/usuario", element: <UsuarioDetails /> },
+          { path: "/perfil", element: <UsuarioDetails /> },
         ],
       },
       {
@@ -32,13 +33,14 @@ const router = createBrowserRouter([
           { path: "/envios", element: <EnviosTable /> },
           { path: "/repartidores", element: <RepartidoresTable /> },
           { path: "/usuarioForm", element: <UsuarioFrom /> },
+          { path: "/repartidorForm", element: <RepartidorForm /> },
         ],
       },
       {
         element: <ProtectedRoutes roles={["CLIENTE", "ADMIN"]} />,
         children: [
           { path: "/envioForm", element: <EnvioForm /> },
-          { path: "/envio", element: <EnvioDetails /> },
+          { path: "/envio/:id", element: <EnvioDetails /> },
         ],
       },
     ],

@@ -1,6 +1,11 @@
+import type { EstadoEnvio } from "../../types/envio-types";
 import { Badge } from "../ui/badge";
 
-export default function EstadoEnvioBadge({estado}: any) {
+type Props = {
+    estado: EstadoEnvio
+}
+
+export default function EstadoEnvioBadge({ estado }: Props) {
     switch (estado) {
         case 'PENDIENTE':
             return (

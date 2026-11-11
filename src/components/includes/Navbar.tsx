@@ -8,6 +8,8 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { useAppContext } from "../../hooks/useAppContext";
 import { useRoles } from "../../hooks/useRoles";
 import type { Role } from "../../types/usuario-types";
+import { useState } from "react";
+import logo from "../../assets/Logo-Logitrack-Styx.jpg";
 
 interface NavRoute {
   url: string
@@ -20,7 +22,8 @@ const routes: NavRoute[] = [
   { url: "/envios", title: "Envios", roles: ["ADMIN"] },
   { url: "/repartidores", title: "Repartidores", roles: ["ADMIN"] },
   { url: "/usuarioForm", title: "Crear Usuario", roles: ["ADMIN"] },
-  { url: "/envioForm", title: "Crear Envio", roles: ["ADMIN", "CLIENTE"] }
+  { url: "/envioForm", title: "Crear Envio", roles: ["ADMIN", "CLIENTE"] },
+  { url: "/repartidorForm", title: "Crear Repartidor", roles: ["ADMIN"] }
 ]
 
 export default function Navbar() {
@@ -28,8 +31,9 @@ export default function Navbar() {
   const navigate = useNavigate()
   const isAuthenticated = useAppContext((s) => s.isAuthenticated)
   const logout = useAppContext((s) => s.logout)
+  const roles = useRoles()  
+  const [sheetOpen, setSheetOpen] = useState(false)
   
-  const roles = useRoles()
 
   const visibleRoutes = routes.filter(
     (route) => !route.roles || route.roles.some((r) => roles.includes(r))
@@ -37,6 +41,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout()
+    setSheetOpen(false)
     navigate("/login")
   }
 
@@ -44,7 +49,9 @@ export default function Navbar() {
     isAuthenticated ? (
       <>
         <Button variant="outline" size="sm">
-          <Link to="/usuario">Ver Perfil</Link>
+          <Link to="/perfil">
+            Ver Perfil
+          </Link>
         </Button>
         <Button variant="destructive" size="sm" onClick={handleLogout}>
           Cerrar Sesión
@@ -53,10 +60,14 @@ export default function Navbar() {
     ) : (
       <>
         <Button variant="outline" size="sm">
-          <Link to="/login">Iniciar Sesión</Link>
+          <Link to="/login">
+            Iniciar Sesión
+          </Link>
         </Button>
         <Button size="sm">
-          <Link to="/register">Registrarse</Link>
+          <Link to="/register">
+            Registrarse
+          </Link>
         </Button>
       </>
     )
@@ -70,9 +81,9 @@ export default function Navbar() {
             {/* Logo */}
             <Link to={"/"} className="flex items-center gap-2">
               <img
-                src=""
-                className="max-h-8 dark:invert"
-                alt=""
+                src={logo}
+                className="max-h-8"
+                alt="Logo-Logitrack-Styx"
               />
               <span className="text-lg font-semibold tracking-tighter">
                 Logitrack - Styx
@@ -110,12 +121,12 @@ export default function Navbar() {
             {/* Logo */}
             <Link to={"/"}>
               <img
-                src=""
-                className="max-h-8 dark:invert"
-                alt=""
+                src={logo}
+                className="max-h-8"
+                alt="Logo-Logitrack-Styx"
               />
             </Link>
-            <Sheet>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger render={<Button variant="outline" size="icon" />}>
                 <Menu className="size-4" />
               </SheetTrigger>

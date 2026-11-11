@@ -3,14 +3,9 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useRegister } from "../../hooks/auth/useRegister";
-
-type RegisterForm = {
-    username: string,
-    email: string,
-    password: string
-}
+import type { RegisterForm } from "../../types/auth-types";
 
 const initialState: RegisterForm = {
     username: "",
@@ -18,12 +13,10 @@ const initialState: RegisterForm = {
     password: ""
 }
 
-
 export default function RegisterForm() {
     
     const [ registerForm, setRegisterForm ] = useState<RegisterForm>(initialState)
-    const [ isPending, startTransition ] = useTransition()
-    const { registerUser } = useRegister()
+    const { mutate: registerUser, isPending } = useRegister()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRegisterForm({
@@ -34,10 +27,7 @@ export default function RegisterForm() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        startTransition(async () => {
-            await registerUser(registerForm.username, registerForm.email, registerForm.password)
-            setRegisterForm(initialState)
-        })
+        registerUser(registerForm)
     }
 
     return (

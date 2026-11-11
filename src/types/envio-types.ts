@@ -15,11 +15,11 @@ export interface Envio {
     alto: number
     largo: number
     tarifa: number
-    estadoEnvio: EstadoEnvio
-    direccionOrigen: Direccion
-    direccionDestino: Direccion
+    estado: EstadoEnvio
+    origen: Direccion
+    destino: Direccion
     clienteId: string
-    courierId: string | null
+    repartidorId: string | null
 }
 
 export interface CreateShipmentForm {
@@ -28,9 +28,15 @@ export interface CreateShipmentForm {
     alto: number
     largo: number
     tarifa: number
-    direccionOrigen: Direccion
-    direccionDestino: Direccion
+    origen: Direccion
+    destino: Direccion
     clienteId: string
+}
+
+export interface Asignacion {
+    envioId: string
+    codigoSeguimiento: string
+    repartidorId: string
 }
 
 export interface AssignCourierForm {

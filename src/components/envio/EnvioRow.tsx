@@ -2,15 +2,22 @@ import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { TableCell, TableRow } from "../ui/table";
 import EstadoEnvioBadge from "./EstadoEnvioBadge";
+import type { Envio } from "../../types/envio-types";
+import CambiarEstadoButton from "./CambiarEstadoButton";
+import CancelarEnvioButton from "./CancelarEnvioButton";
 
-export default function EnvioRow({envio}: any) {
+type Props = {
+    envio: Envio
+}
+
+export default function EnvioRow({ envio }: Props) {
     return (
         <TableRow className="hover:bg-muted/50" key={envio.id}>
             <TableCell className="h-14 px-4 font-medium font-mono text-sm tabular-nums">
-                {envio.codigo}
+                {envio.codigoSeguimiento}
             </TableCell>
             <TableCell className="h-14 px-4 font-semibold text-sm">
-                {envio.cliente}
+                {envio.clienteId}
             </TableCell>
             <TableCell className="h-14 px-4 text-right font-medium">
                 $ {envio.tarifa}
@@ -19,26 +26,23 @@ export default function EnvioRow({envio}: any) {
                 <EstadoEnvioBadge estado={envio.estado}/>
             </TableCell>
             <TableCell className="h-14 px-4 text-left text-muted-foreground text-sm tabular-nums">
-                {envio.direccionOrigen.ciudad}
+                {envio.origen.ciudad}
             </TableCell>
             <TableCell className="h-14 px-4 text-left text-muted-foreground text-sm tabular-nums">
-                {envio.direccionDestino.ciudad}
+                {envio.destino.ciudad}
             </TableCell>
             <TableCell className="h-14 px-4 font-semibold text-sm">
-                {envio.repartidor}
+                {envio.repartidorId ? envio.repartidorId : "No Asignado"}
             </TableCell>
             <TableCell className="h-14 px-4 text-center">
                 <>
                     <Button size={"xs"}>
-                        <Link to={`/envio`}>
+                        <Link to={`/envio/${envio.id}`}>
                             Ver
                         </Link>
                     </Button>
-                    <Button size={"xs"} variant={"secondary"}>
-                        <Link to={'#'}>
-                            Cambiar Estado
-                        </Link>
-                    </Button>
+                    <CambiarEstadoButton envio={envio} />
+                    {/* <CancelarEnvioButton envio={envio} /> */}
                 </>
             </TableCell>
         </TableRow>

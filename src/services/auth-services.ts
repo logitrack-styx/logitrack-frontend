@@ -1,9 +1,10 @@
 import { apiClient } from "../config/axios-config"
+import type { LoginForm, RegisterForm } from "../types/auth-types"
 
-export const loginMethod = async (username: string, password: string) => {
-    return await apiClient.post("api/v1/auth/login", { username, password })
+export const loginMethod = async (body: LoginForm) => {
+    return await apiClient.post("api/v1/auth/login", body)
 }
 
-export const registerMethod = async (username: string, email: string, password: string) => {
-    return await apiClient.post("api/v1/auth/register", { username, email, password })
+export const registerMethod = async (body: RegisterForm) => {
+    return await apiClient.post("api/v1/auth/register", body)
 }

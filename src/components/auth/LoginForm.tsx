@@ -3,25 +3,18 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useLogin } from "../../hooks/auth/useLogin";
-
-type LoginForm = {
-    username: string,
-    password: string
-}
+import type { LoginForm } from "../../types/auth-types";
 
 const initialState: LoginForm = {
     username: "",
     password: ""
 }
-
-
 export default function LoginForm() {
 
     const [ loginForm, setLoginForm ] = useState<LoginForm>(initialState)
-    const [ isPending, startTransition ] = useTransition()
-    const { loginUser } = useLogin()
+    const { mutate: loginUser, isPending } = useLogin()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLoginForm({
@@ -32,10 +25,7 @@ export default function LoginForm() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        startTransition(async () => {
-            await loginUser(loginForm.username, loginForm.password)
-            setLoginForm(initialState)
-        })
+        loginUser(loginForm)
     }
 
     return (

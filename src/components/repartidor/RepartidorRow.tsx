@@ -2,8 +2,13 @@ import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { TableCell, TableRow } from "../ui/table";
 import EstadoRepartidorBadge from "./EstadoRepartidorBadge";
+import type { Repartidor } from "../../types/repartidor-types";
 
-export default function RepartidorRow({repartidor}: any) {
+type Props = {
+    repartidor: Repartidor
+}
+
+export default function RepartidorRow({ repartidor }: Props) {
     return (
         <TableRow className="hover:bg-muted/50" key={repartidor.id}>
             <TableCell className="h-14 px-4 font-medium font-mono text-sm tabular-nums">

@@ -15,7 +15,7 @@ export default function Home() {
                         LogiTrack es una plataforma de logística integral orientada a la gestión y seguimiento de envíos para comercios electrónicos y entregas de última milla.
                     </p>
                     <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-                        <Button
+                        {/* <Button
                         size="lg"
                         className="w-full sm:w-auto"
                         >
@@ -32,14 +32,14 @@ export default function Home() {
                             <Link to={"/register"}>
                                 Registrarse
                             </Link>
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
-                    <img
+                    {/* <img
                     src=""
                     alt=""
                     className="aspect-video w-full rounded-md border border-border object-cover object-top"
-                    />
+                    /> */}
                 </div>
             </div>
             </section>

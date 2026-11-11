@@ -1,34 +1,22 @@
 import { apiClient } from "../config/axios-config"
-import type { CreateCourierForm, UpdateCourierStatusForm } from "../types/repartidor-types"
+import type { CreateCourierForm, EstadoRepartidor, Repartidor, UpdateCourierStatusForm } from "../types/repartidor-types"
 
-export const getCouriers = async (token: string) => {
-    return await apiClient.get("api/v1/couriers", { 
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
+export const getCouriers = async (estado?: EstadoRepartidor) => {
+    return await apiClient.get<Repartidor[]>("api/v1/couriers", { 
+        params: { 
+            estado: estado
+        } 
     })
 }
 
-export const getCourierById = async (token: string, id: string) => {
-    return await apiClient.get(`api/v1/couriers/${id}`, { 
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const getCourierById = async (id: string) => {
+    return await apiClient.get<Repartidor>(`api/v1/couriers/${id}`)
 }
 
-export const createCourier = async (token: string, body: CreateCourierForm) => {
-    return await apiClient.post("api/v1/couriers", body, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const createCourier = async (body: CreateCourierForm) => {
+    return await apiClient.post<Repartidor>("api/v1/couriers", body)
 }
 
-export const updateCourierStatus = async (token: string, id: string, body: UpdateCourierStatusForm) => {
-    return await apiClient.patch(`api/v1/couriers/${id}/disponibilidad`, body, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const updateCourierStatus = async (id: string, body: UpdateCourierStatusForm) => {
+    return await apiClient.patch<Repartidor>(`api/v1/couriers/${id}/disponibilidad`, body)
 }

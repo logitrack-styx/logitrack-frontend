@@ -1,8 +1,6 @@
 import { jwtDecode, type JwtPayload } from "jwt-decode";
 import type { Role } from "../types/usuario-types";
 
-
-
 interface LogiTrackPayload extends JwtPayload {
     iss: string
     sub: string

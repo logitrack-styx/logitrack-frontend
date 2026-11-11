@@ -1,6 +1,11 @@
+import type { EstadoRepartidor } from "../../types/repartidor-types";
 import { Badge } from "../ui/badge";
 
-export default function EstadoRepartidorBadge({estado}: any) {
+type Props = {
+    estado: EstadoRepartidor
+}
+
+export default function EstadoRepartidorBadge({ estado }: Props) {
     switch (estado) {
         case 'ACTIVO':
             return (

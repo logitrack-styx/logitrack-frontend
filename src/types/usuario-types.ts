@@ -5,7 +5,7 @@ export interface Usuario {
     username: string
     email: string
     role: Role[]
-    eneable: boolean
+    enable: boolean
 }
 
 export interface CreateUserForm {

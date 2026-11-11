@@ -1,8 +1,11 @@
+import { useState } from "react";
+import type { CreateUserForm, Role } from "../../types/usuario-types";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { useCrearUsuario } from "../../hooks/useUsuario";
 
 const rolUsuario = [
     { label: "Cliente", value: "CLIENTE" },
@@ -10,7 +13,29 @@ const rolUsuario = [
     { label: "Admin", value: "ADMIN" }
 ]
 
+const initialState: CreateUserForm = {
+    username: "",
+    email: "",
+    password: "",
+    role: "CLIENTE" as Role,
+}
+
 export default function UsuarioFrom() {
+
+    const [form, setForm] = useState(initialState)
+    const { mutate: createUser, isPending } = useCrearUsuario()
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value })
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        createUser(form, {
+            onSuccess: () => setForm(initialState),
+        })
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -20,13 +45,13 @@ export default function UsuarioFrom() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="username">
                                 Username
                             </FieldLabel>
-                            <Input id="username" type="text" placeholder="usernameexample123" required />
+                            <Input id="username" type="text" placeholder="usernameexample123" name="username" value={form.username} onChange={handleChange} required />
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="email">
@@ -36,6 +61,7 @@ export default function UsuarioFrom() {
                                 id="email"
                                 type="email"
                                 placeholder="email@example.com"
+                                name="email" value={form.email} onChange={handleChange}
                                 required
                             />
                         </Field>
@@ -43,13 +69,18 @@ export default function UsuarioFrom() {
                             <FieldLabel htmlFor="password">
                                 Contraseña
                             </FieldLabel>
-                            <Input id="password" type="password" required />
+                            <Input id="password" type="password" name="password" value={form.password} onChange={handleChange} required />
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="role">
                                 Rol
                             </FieldLabel>
-                            <Select items={rolUsuario} defaultValue={"CLIENTE"}>
+                            <Select 
+                                items={rolUsuario} 
+                                value={form.role}
+                                onValueChange={(value) =>
+                                    setForm({ ...form, role: (value ?? "CLIENTE") as Role })
+                                }>
                                 <SelectTrigger className="w-full sm:w-45">
                                     <SelectValue />
                                 </SelectTrigger>
@@ -67,7 +98,7 @@ export default function UsuarioFrom() {
                         </Field>
                         <FieldGroup>
                             <Field>
-                                <Button type="submit">
+                                <Button type="submit" disabled={isPending}>
                                     Crear Usuario
                                 </Button>
                             </Field>

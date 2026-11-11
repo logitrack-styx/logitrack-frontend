@@ -1,28 +1,24 @@
+import { useState } from "react"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import RepartidorRow from "./RepartidorRow"
+import type { EstadoRepartidor } from "../../types/repartidor-types"
+import { useRepartidores } from "../../hooks/useRepartidor"
 
-const estadoRepartidor = [
+const estadosRepartidor = [
     { label: "Todos", value: "" },
     { label: "Activo", value: "ACTIVO" },
     { label: "Inactivo", value: "INACTIVO" }
 ]
 
-const repartidores = [
-    {
-        id: 1,
-        nombre: "nombre",
-        tipoVehiculo: "vehiculo 1",
-        estado: "ACTIVO",
-    },{
-        id: 2,
-        nombre: "nombre",
-        tipoVehiculo: "vehiculo 2",
-        estado: "INACTIVO",
-    },
-]
-
 export default function RepartidoresTable() {
+
+    const [estado, setEstado] = useState("")
+    
+    const status = estado === "" ? undefined : (estado as EstadoRepartidor)
+
+    const { data: repartidores = [], isPending, isFetching } = useRepartidores(status)
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -31,18 +27,18 @@ export default function RepartidoresTable() {
                         Repartidores
                     </h3>
                     <p className="mt-1 text-pretty text-muted-foreground text-sm">
-                        
+                        {isFetching && !isPending ? "Actualizando..." : ""}
                     </p>
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                    <Select items={estadoRepartidor} defaultValue={""}>
+                    <Select items={estadosRepartidor} value={estado} onValueChange={(value) => setEstado(value ?? "")}>
                         <SelectTrigger className="w-full sm:w-45">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Estados de repartidores</SelectLabel>
-                                {estadoRepartidor.map((estado) => (
+                                {estadosRepartidor.map((estado) => (
                                     <SelectItem key={estado.value} value={estado.value}>
                                         {estado.label}
                                     </SelectItem>
@@ -75,19 +71,22 @@ export default function RepartidoresTable() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {repartidores.length > 0 ? (
+                        {isPending ? (
+                            <TableRow>
+                                <TableCell className="h-24 text-center text-muted-foreground" colSpan={5}>
+                                    Cargando repartidores...
+                                </TableCell>
+                            </TableRow>
+                        ) : repartidores.length > 0 ? (
                             repartidores.map((repartidor) => (
                                 <RepartidorRow key={repartidor.id} repartidor={repartidor} />
                             ))
                         ) : (
-                        <TableRow>
-                            <TableCell
-                                className="h-24 text-center text-muted-foreground"
-                                colSpan={6}
-                                >
-                                No hay repartidores.
-                            </TableCell>
-                        </TableRow>
+                            <TableRow>
+                                <TableCell className="h-24 text-center text-muted-foreground" colSpan={5}>
+                                    No hay repartidores.
+                                </TableCell>
+                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

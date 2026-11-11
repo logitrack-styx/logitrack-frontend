@@ -1,26 +1,14 @@
 import { apiClient } from "../config/axios-config"
-import type { CreateUserForm } from "../types/usuario-types"
+import type { CreateUserForm, Usuario } from "../types/usuario-types"
 
-export const getCurrentUser = async (token: string) => {
-    return await apiClient.get("api/v1/users/me", {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const getCurrentUser = async () => {
+    return await apiClient.get<Usuario>("api/v1/users/me")
 }
 
-export const createUser = async (token: string, body: CreateUserForm) => {
-    return await apiClient.post("api/v1/users", body, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const createUser = async (body: CreateUserForm) => {
+    return await apiClient.post<Usuario>("api/v1/users", body)
 }
 
-export const getUser = async (token: string, id: string) => {
-    return await apiClient.get(`api/v1/users/${id}`, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
+export const getUser = async (id: string) => {
+    return await apiClient.get<Usuario>(`api/v1/users/${id}`)
 }
